@@ -1,23 +1,23 @@
-import 'package:eva/users/screens/home/components/secondary_course_card.dart';
+import 'package:eva/users/model/course.dart';
+import 'package:eva/users/screens/home/components/course_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../model/course.dart';
 
-class CoursePage extends StatefulWidget {
-  const CoursePage({super.key});
+class SemesterPage extends StatefulWidget {
+  const SemesterPage({super.key});
 
   @override
-  State<CoursePage> createState() => _CoursePageState();
+  State<SemesterPage> createState() => _SemesterPageState();
 }
 
-class _CoursePageState extends State<CoursePage> {
+class _SemesterPageState extends State<SemesterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurpleAccent,
         title: const Text(
-          'Lớp học',
+          'Học kỳ',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -31,16 +31,16 @@ class _CoursePageState extends State<CoursePage> {
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
-                  children: recentCourses
-                      .map((course) => Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, bottom: 20),
-                    child: SecondaryCourseCard(
-                      title: course.title,
-                      iconsSrc: course.iconSrc,
-                      colorl: course.color,
+                  children: courses
+                      .map(
+                        (course) => Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                      child: CourseCard(
+                        title: course.title,
+                        iconSrc: course.iconSrc,
+                        color: course.color,
+                      ),
                     ),
-                  ),
                   )
                       .toList(),
                 ),

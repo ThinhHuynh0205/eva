@@ -27,7 +27,7 @@ class BtmNavItem extends StatelessWidget {
           AnimatedBar(isActive: selectedNav == navBar),
           SizedBox(
             height: 36,
-            width: 36,
+            width: 50,
             child: Opacity(
               opacity: selectedNav == navBar ? 1 : 0.5,
               child: RiveAnimation.asset(

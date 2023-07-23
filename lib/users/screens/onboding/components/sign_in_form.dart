@@ -99,7 +99,7 @@ class _SignInFormState extends State<SignInForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Account",
+                "Tài khoản",
                 style: TextStyle(
                   color: Colors.black54,
                 ),
@@ -109,7 +109,7 @@ class _SignInFormState extends State<SignInForm> {
                 child: TextFormField(
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Please enter your account";
+                      return "Vui lòng nhập tài khoản của bạn";
                     }
                     return null;
                   },
@@ -122,7 +122,7 @@ class _SignInFormState extends State<SignInForm> {
                 ),
               ),
               const Text(
-                "Password",
+                "Mật khẩu",
                 style: TextStyle(
                   color: Colors.black54,
                 ),
@@ -133,7 +133,7 @@ class _SignInFormState extends State<SignInForm> {
                   obscureText: true,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Please enter your password";
+                      return "Vui lòng nhập mật khẩu của bạn";
                     }
                     return null;
                   },
@@ -167,7 +167,7 @@ class _SignInFormState extends State<SignInForm> {
                     CupertinoIcons.arrow_right,
                     color: Color(0xFFFFFFFF),
                   ),
-                  label: const Text("Sign In"),
+                  label: const Text("Đăng nhập"),
                 ),
               ),
             ],

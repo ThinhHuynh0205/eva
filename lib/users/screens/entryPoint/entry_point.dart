@@ -5,8 +5,7 @@ import 'package:rive/rive.dart';
 import '../../../constants.dart';
 import '../../model/menu.dart';
 import '../../utils/rive_utils.dart';
-import '../home/components/home_screen1.dart';
-import '../home/home_screen.dart';
+import '../home/home_screen1.dart';
 import 'components/btm_nav_item.dart';
 import 'components/menu_btn.dart';
 import 'components/side_bar.dart';
@@ -138,7 +137,7 @@ class _EntryPointState extends State<EntryPoint>
           child: Container(
             padding:
                 const EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 12),
-            margin: const EdgeInsets.symmetric(horizontal: 24),
+            margin: const EdgeInsets.symmetric(horizontal: 50),
             decoration: BoxDecoration(
               color: backgroundColor2.withOpacity(0.8),
               borderRadius: const BorderRadius.all(Radius.circular(24)),

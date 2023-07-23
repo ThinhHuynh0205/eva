@@ -41,7 +41,7 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
                   child: Column(
                     children: [
                       Text(
-                        "Login",
+                        "Đăng nhập",
                         style: TextStyle(
                           fontSize: 34,
                           fontFamily: "Poppins",
@@ -51,7 +51,7 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         child: Text(
-                          "Please login with the account provided by the manager.",
+                          "Vui lòng đăng nhập với tài khoản được cung cấp bởi quản lý.",
                           textAlign: TextAlign.center,
                         ),
                       ),

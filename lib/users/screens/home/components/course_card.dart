@@ -18,8 +18,6 @@ class CourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      width: 200,
       child: OutlinedButton(
         onPressed: (){
           Navigator.push(
@@ -32,17 +30,15 @@ class CourseCard extends StatelessWidget {
         },
         style: OutlinedButton.styleFrom(
           backgroundColor: color,
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 6, right: 8),
                 child: Column(
                   children: [
                     Text(
@@ -53,7 +49,6 @@ class CourseCard extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
             //SvgPicture.asset(iconSrc),
           ],
         ),
