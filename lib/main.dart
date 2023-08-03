@@ -1,4 +1,6 @@
+import 'package:eva/users/screens/entryPoint/entry_point.dart';
 import 'package:eva/users/screens/onboding/onboding_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
@@ -8,11 +10,29 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  BuildContext? myContext;
+  FirebaseAuth.instance
+      .authStateChanges()
+      .listen((User? user) {
+    if (user != null) {
+      // Sử dụng biến myContext để push Navigator
+      if (myContext != null) {
+        Navigator.push(
+          myContext!,
+          MaterialPageRoute(
+            builder: (context) => const EntryPoint(),
+          ),
+        );
+      }
+    }
+  });
+  runApp(MyApp(myContext));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp(this.myContext, {super.key});
+
+  final BuildContext? myContext;
 
   // This widget is the root of your application.
   @override

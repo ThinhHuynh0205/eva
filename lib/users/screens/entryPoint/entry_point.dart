@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva/users/screens/onboding/components/sign_in_form.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import '../../../constants.dart';
@@ -59,6 +61,34 @@ class _EntryPointState extends State<EntryPoint>
     _animationController.dispose();
     super.dispose();
   }
+  String? uid = UserAuthData.uid;
+  String? nameFromFirestore;
+  Future<void> getDataFromFirestore() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot =
+      await FirebaseFirestore.instance
+          .collection('User')
+          .where('UID', isEqualTo: "$uid")
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        // Lấy tài liệu đầu tiên (nếu có nhiều tài liệu thỏa mãn truy vấn, ta có thể lặp qua snapshot.docs để xử lý nhiều tài liệu)
+        Map<String, dynamic> data = snapshot.docs.first.data();
+        // Lấy giá trị của trường "Name" và gán vào biến nameFromFirestore
+        String? name = data['Name'];
+        setState(() {
+          nameFromFirestore = name;
+        });
+
+      } else {
+        // Không tìm thấy tài liệu nào thỏa mãn truy vấn
+        print('Không tìm thấy tài liệu có UID là "$uid"');
+      }
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      print('Lỗi khi truy vấn Firestore: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +105,7 @@ class _EntryPointState extends State<EntryPoint>
             curve: Curves.fastOutSlowIn,
             left: isSideBarOpen ? 0 : -288,
             top: 0,
-            child: const SideBar(),
+            child:   SideBar(nameFromFirestore: nameFromFirestore ?? "Guest"),
           ),
           Transform(
             alignment: Alignment.center,

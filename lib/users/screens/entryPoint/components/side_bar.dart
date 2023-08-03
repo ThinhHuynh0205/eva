@@ -1,4 +1,6 @@
+import 'package:eva/users/screens/onboding/components/sign_in_form.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../model/menu.dart';
 import '../../../utils/rive_utils.dart';
@@ -6,16 +8,23 @@ import 'info_card.dart';
 import 'side_menu.dart';
 
 class SideBar extends StatefulWidget {
-  const SideBar({super.key});
+  final String nameFromFirestore;
+
+  const SideBar({Key? key, required this.nameFromFirestore}) : super(key: key);
 
   @override
   State<SideBar> createState() => _SideBarState();
+
 }
 
 class _SideBarState extends State<SideBar> {
   Menu selectedSideMenu = sidebarMenus.first;
+
+  String? uid = UserAuthData.uid;
+
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Container(
         width: 288,
@@ -31,8 +40,8 @@ class _SideBarState extends State<SideBar> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const InfoCard(
-                name: "Abu Anwar",
+               InfoCard(
+                name: uid ?? "Guest",
                 bio: "YouTuber",
               ),
               Padding(

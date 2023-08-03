@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rive/rive.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../entryPoint/entry_point.dart';
 
@@ -13,9 +14,15 @@ class SignInForm extends StatefulWidget {
   @override
   State<SignInForm> createState() => _SignInFormState();
 }
+class UserAuthData {
+  static String? uid;
+}
 
 class _SignInFormState extends State<SignInForm> {
+  TextEditingController _passwordTextController = TextEditingController();
+  TextEditingController _emailTextController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isShowLoading = false;
   bool isShowConfetti = false;
   late SMITrigger error;
@@ -44,40 +51,114 @@ class _SignInFormState extends State<SignInForm> {
   }
 
   void singIn(BuildContext context) {
-    // confetti.fire();
     setState(() {
       isShowConfetti = false;
       isShowLoading = true;
     });
+
     Future.delayed(
       const Duration(seconds: 1),
-      () {
+          () async {
         if (_formKey.currentState!.validate()) {
-          success.fire();
-          Future.delayed(
-            const Duration(seconds: 2),
-            () {
+          try {
+            setState(() {
+              isShowLoading = true;
+            });
+
+            // Đăng nhập với Firebase Authentication
+            final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: _emailTextController.text,
+              password: _passwordTextController.text,
+            );
+            final user = userCredential.user;
+            print(user?.uid);
+
+            // Kiểm tra xem việc đăng nhập có thành công hay không
+            if (FirebaseAuth.instance.currentUser != null) {
+              // Nếu thành công, bạn có thể tiếp tục chuyển hướng đến trang chính của ứng dụng
+              UserAuthData.uid = user?.uid;
               setState(() {
                 isShowLoading = false;
               });
-              //confetti.fire();
-              // Navigate & hide confetti
-              Future.delayed(const Duration(milliseconds: 100), () {
-                // Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EntryPoint(),
-                  ),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EntryPoint(),
+                ),
+              );
+            }
+          } catch (e) {
+            // Xử lý lỗi khi đăng nhập
+            setState(() {
+              isShowLoading = false;
+              isShowConfetti = false;
+            });
+            if (e is FirebaseAuthException) {
+              if (e.code == 'user-not-found') {
+                // Lỗi tài khoản không tồn tại
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Lỗi đăng nhập'),
+                      content: Text('Tài khoản không tồn tại.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
                 );
-              });
-            },
-          );
+              } else if (e.code == 'wrong-password') {
+                // Lỗi sai mật khẩu
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Lỗi đăng nhập'),
+                      content: Text('Sai mật khẩu.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                // Xử lý các lỗi khác (nếu cần)
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Lỗi đăng nhập'),
+                      content: Text('Đăng nhập không thành công.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            }
+          }
         } else {
           error.fire();
           Future.delayed(
             const Duration(seconds: 2),
-            () {
+                () {
               setState(() {
                 isShowLoading = false;
               });
@@ -88,6 +169,7 @@ class _SignInFormState extends State<SignInForm> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +189,9 @@ class _SignInFormState extends State<SignInForm> {
               Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 16),
                 child: TextFormField(
-                  validator: (value) {
-                    if (value!.isEmpty) {
+                    controller:_emailTextController,
+                  validator: (emailTextController) {
+                    if (emailTextController!.isEmpty) {
                       return "Vui lòng nhập tài khoản của bạn";
                     }
                     return null;
@@ -130,9 +213,10 @@ class _SignInFormState extends State<SignInForm> {
               Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 16),
                 child: TextFormField(
+                  controller: _passwordTextController,
                   obscureText: true,
-                  validator: (value) {
-                    if (value!.isEmpty) {
+                  validator: (passwordTextController) {
+                    if (passwordTextController!.isEmpty) {
                       return "Vui lòng nhập mật khẩu của bạn";
                     }
                     return null;

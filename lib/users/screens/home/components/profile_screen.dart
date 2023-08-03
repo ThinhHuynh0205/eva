@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva/users/screens/onboding/components/sign_in_form.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -7,7 +9,48 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
+
 class _ProfilePageState extends State<ProfilePage> {
+  String? uid = UserAuthData.uid;
+  String? nameFromFirestore;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch data from Firestore when the profile page is loaded
+    getDataFromFirestore();
+  }
+  Future<void> getDataFromFirestore() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot =
+      await FirebaseFirestore.instance
+          .collection('User')
+          .where('UID', isEqualTo: "$uid")
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        // Lấy tài liệu đầu tiên (nếu có nhiều tài liệu thỏa mãn truy vấn, ta có thể lặp qua snapshot.docs để xử lý nhiều tài liệu)
+        Map<String, dynamic> data = snapshot.docs.first.data();
+        // Lấy giá trị của trường "Name" và gán vào biến nameFromFirestore
+        String? name = data['Name'];
+        // Gọi phương thức để cập nhật giá trị name cho toàn bộ widget con trong _TextPageState
+        updateName(name);
+
+      } else {
+        // Không tìm thấy tài liệu nào thỏa mãn truy vấn
+        print('Không tìm thấy tài liệu có UID là "$uid"');
+      }
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      print('Lỗi khi truy vấn Firestore: $e');
+    }
+  }
+  // Phương thức để cập nhật giá trị name cho toàn bộ widget con trong _TextPageState
+  void updateName(String? newName) {
+    setState(() {
+      nameFromFirestore = newName;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,12 +62,15 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         body: Center(
-          child: ProfileCard(),
+          child: ProfileCard(name: nameFromFirestore),
         ),
     );
   }
 }
 class ProfileCard extends StatefulWidget {
+  final String? name;
+
+  const ProfileCard({Key? key, this.name}) : super(key: key);
   @override
   _ProfileCardState createState() => _ProfileCardState();
 }
@@ -37,7 +83,7 @@ class _ProfileCardState extends State<ProfileCard> {
 
   @override
   void initState() {
-    _nameController.text = 'John Doe';
+    _nameController.text = widget.name ?? '';
     _titleController.text = 'Software Engineer';
     _phoneController.text = '123-456-7890';
     _emailController.text = 'johndoe@example.com';

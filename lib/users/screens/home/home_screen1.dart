@@ -1,12 +1,11 @@
 import 'package:eva/users/screens/home/components/calendar_screen.dart';
-import 'package:eva/users/screens/home/components/course_sreen.dart';
+import 'package:eva/users/screens/home/components/semester_screen1.dart';
+import 'package:eva/users/screens/home/components/text.dart';
 import 'package:eva/users/screens/home/components/profile_screen.dart';
-import 'package:eva/users/screens/home/components/semester_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../model/course.dart';
-import 'components/course_card.dart';
+
 
 class HomePage1 extends StatelessWidget {
   const HomePage1({super.key});
@@ -33,7 +32,7 @@ class HomePage1 extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SemesterPage(),
+                            builder: (context) => const SemesterPage1(),
                           ),
                         );
                       },
@@ -125,7 +124,7 @@ class HomePage1 extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const CelendarPage(),
+                            builder: (context) => const EventCalendarScreen(),
                           ),
                         );
                       },
@@ -164,7 +163,14 @@ class HomePage1 extends StatelessWidget {
                     height: 320,
                     width: 190,
                     child: OutlinedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>  CityPage(),
+                          ),
+                        );
+                      },
                       style: OutlinedButton.styleFrom(
                           backgroundColor: Color(0xFF0891C4),
                           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
