@@ -2,8 +2,12 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva/users/screens/onboding/components/sign_in_form.dart';
+import 'package:eva/users/screens/onboding/onboding_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants.dart';
 import '../../model/menu.dart';
 import '../../utils/rive_utils.dart';
@@ -49,6 +53,7 @@ class _EntryPointState extends State<EntryPoint>
           setState(() {});
         },
       );
+    getDataFromFirestore();
     scalAnimation = Tween<double>(begin: 1, end: 0.8).animate(CurvedAnimation(
         parent: _animationController, curve: Curves.fastOutSlowIn));
     animation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
@@ -61,14 +66,15 @@ class _EntryPointState extends State<EntryPoint>
     _animationController.dispose();
     super.dispose();
   }
-  String? uid = UserAuthData.uid;
   String? nameFromFirestore;
   Future<void> getDataFromFirestore() async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final uid = prefs.getString('uid');
       QuerySnapshot<Map<String, dynamic>> snapshot =
       await FirebaseFirestore.instance
           .collection('User')
-          .where('UID', isEqualTo: "$uid")
+          .where('UID', isEqualTo: uid)
           .get();
       if (snapshot.docs.isNotEmpty) {
         // Lấy tài liệu đầu tiên (nếu có nhiều tài liệu thỏa mãn truy vấn, ta có thể lặp qua snapshot.docs để xử lý nhiều tài liệu)
@@ -89,6 +95,22 @@ class _EntryPointState extends State<EntryPoint>
     }
   }
 
+  void navigateToLogin()async{
+    // Xóa UID khỏi SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('uid');
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OnbodingScreen(),
+      ),
+    );
+  }
+
+  void exitApp() {
+    // Thoát ứng dụng
+    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +127,10 @@ class _EntryPointState extends State<EntryPoint>
             curve: Curves.fastOutSlowIn,
             left: isSideBarOpen ? 0 : -288,
             top: 0,
-            child:   SideBar(nameFromFirestore: nameFromFirestore ?? "Guest"),
+            child:   SideBar(
+                nameFromFirestore: '$nameFromFirestore',
+              signOutCallback: navigateToLogin,
+            ),
           ),
           Transform(
             alignment: Alignment.center,
@@ -117,17 +142,28 @@ class _EntryPointState extends State<EntryPoint>
               offset: Offset(animation.value * 265, 0),
               child: Transform.scale(
                 scale: scalAnimation.value,
-                child: const ClipRRect(
+                child:  ClipRRect(
                   borderRadius: BorderRadius.all(
                     Radius.circular(24),
                   ),
-                  child: HomePage1(),
+                  child: WillPopScope(
+                      onWillPop: () async {
+                        if (Navigator.of(context).userGestureInProgress) {
+                          // Đang có thao tác của người dùng, cho phép quay lại màn hình trước
+                          return true;
+                        } else {
+                          // Ngăn chặn quay lại và thoát ứng dụng
+                          exitApp();
+                          return false;
+                        }
+                      },
+                      child: HomePage1()),
                 ),
               ),
             ),
           ),
           AnimatedPositioned(
-            duration: const Duration(milliseconds: 200),
+            duration:  Duration(milliseconds: 200),
             curve: Curves.fastOutSlowIn,
             left: isSideBarOpen ? 220 : 0,
             top: 16,

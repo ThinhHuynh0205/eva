@@ -9,8 +9,12 @@ import 'side_menu.dart';
 
 class SideBar extends StatefulWidget {
   final String nameFromFirestore;
+  final VoidCallback signOutCallback;
 
-  const SideBar({Key? key, required this.nameFromFirestore}) : super(key: key);
+  const SideBar({Key? key,
+    required this.nameFromFirestore,
+    required this.signOutCallback,
+  }) : super(key: key);
 
   @override
   State<SideBar> createState() => _SideBarState();
@@ -20,7 +24,6 @@ class SideBar extends StatefulWidget {
 class _SideBarState extends State<SideBar> {
   Menu selectedSideMenu = sidebarMenus.first;
 
-  String? uid = UserAuthData.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +44,7 @@ class _SideBarState extends State<SideBar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
                InfoCard(
-                name: uid ?? "Guest",
-                bio: "YouTuber",
+                name: widget.nameFromFirestore,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 24, top: 32, bottom: 16),
@@ -70,6 +72,28 @@ class _SideBarState extends State<SideBar> {
                         },
                       ))
                   .toList(),
+              Center(
+                child: Column(
+                  children: [
+                    SizedBox(height: 200),
+                    OutlinedButton(
+                        onPressed: widget.signOutCallback,
+                        style: OutlinedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            padding:  EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            )
+                        ),
+                      child: Text(
+                          'Đăng xuất',
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: Colors.white,fontWeight: FontWeight.w200),
+                      )
+                  ),
+                  ]
+                ),
+              )
             ],
           ),
         ),

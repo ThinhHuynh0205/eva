@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CourseCard extends StatelessWidget {
-  const CourseCard({
+class StudentCard extends StatelessWidget {
+  const StudentCard({
     Key? key,
-    required this.title,
-    required this.description,
+    required this.mssv,
+    required this.namesv,
     required this.onPressed,
     this.colorl = const Color(0xFF7553F6),
   }) : super(key: key);
 
-  final String title,description;
+  final String mssv,namesv;
   final Color colorl;
   final VoidCallback onPressed;
 
@@ -29,19 +29,19 @@ class CourseCard extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Column(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
-                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
+                    '19207106',
+                    style: TextStyle(
+                      color: Colors.white60,
+                      fontSize: 16,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    description,
+                    'Huynh Tan Thinh',
                     style: TextStyle(
                       color: Colors.white60,
                       fontSize: 16,

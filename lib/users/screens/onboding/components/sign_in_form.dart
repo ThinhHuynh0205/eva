@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rive/rive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../entryPoint/entry_point.dart';
 
@@ -13,9 +14,6 @@ class SignInForm extends StatefulWidget {
 
   @override
   State<SignInForm> createState() => _SignInFormState();
-}
-class UserAuthData {
-  static String? uid;
 }
 
 class _SignInFormState extends State<SignInForm> {
@@ -76,7 +74,9 @@ class _SignInFormState extends State<SignInForm> {
             // Kiểm tra xem việc đăng nhập có thành công hay không
             if (FirebaseAuth.instance.currentUser != null) {
               // Nếu thành công, bạn có thể tiếp tục chuyển hướng đến trang chính của ứng dụng
-              UserAuthData.uid = user?.uid;
+              // Lưu thông tin đăng nhập vào SharedPreferences
+              final prefs = await SharedPreferences.getInstance();
+              prefs.setString('uid', FirebaseAuth.instance.currentUser!.uid);
               setState(() {
                 isShowLoading = false;
               });

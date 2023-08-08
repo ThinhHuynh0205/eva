@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva/users/screens/home/components/course_card.dart';
+import 'package:eva/users/screens/home/components/course_detail.dart';
 import 'package:eva/users/screens/home/components/semester_screen1.dart';
 import 'package:eva/users/screens/onboding/components/sign_in_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class CoursePage extends StatefulWidget {
@@ -12,20 +14,32 @@ class CoursePage extends StatefulWidget {
   @override
   State<CoursePage> createState() => _CoursePageState();
 }
+
+class GlobalsCo{
+  static String? titleCourse;
+  static String? timeCourse;
+  static String? dayCourse;
+  static String? semester;
+  static List<String> listSV = [];
+}
+
 class LopHoc {
-  final String title, description;
+  final String title, description,time,semester;
   final Color color;
+  final List<String> listSV;
 
   LopHoc({
     required this.title,
+    required this.semester,
+    required this.time,
     required this.description,
+    required this.listSV,
     this.color = const Color(0xFF7553F6),
   });
 }
 
 class _CoursePageState extends State<CoursePage> {
-  String? uid = UserAuthData.uid;
-  String? selectedTitle = Globals.titleSemester;
+  String? selectedTitle = GlobalsSe.titleSemester;
   List<LopHoc> lop = [];
 
   @override
@@ -57,11 +71,13 @@ class _CoursePageState extends State<CoursePage> {
 
   Future<void> getDataFromFirestore() async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final uid = prefs.getString('uid');
       QuerySnapshot<Map<String, dynamic>> snapshot =
       await FirebaseFirestore.instance
           .collection('LopHoc')
           .where('UID', isEqualTo: uid)
-          .where('Semester', isEqualTo: selectedTitle)
+          .where('Semaster', isEqualTo: selectedTitle)
           .get();
       // Chuyển dữ liệu từ snapshot sang danh sách lop
       processData(snapshot);
@@ -78,11 +94,20 @@ class _CoursePageState extends State<CoursePage> {
     for (var docSnapshot in snapshot.docs) {
       var classData = docSnapshot['Class'];
       var dayData = docSnapshot['Day'];
+      var timeData = docSnapshot['Time'];
+      var semesterData = docSnapshot['Semaster'];
 
       String dayDate = getDayDate(dayData);
+      List<String> listSVData = List<String>.from(docSnapshot['ListSV']);
 
       // Tạo đối tượng LopHoc từ dữ liệu trong docSnapshot và thêm vào danh sách lop
-      lop.add(LopHoc(title: classData, description: '$dayDate'));
+      lop.add(LopHoc(
+          title: classData,
+          description: '$dayDate',
+          time: timeData,
+          semester: semesterData,
+        listSV: listSVData,
+      ));
     }
 
     // Gọi setState để cập nhật giao diện
@@ -114,6 +139,19 @@ class _CoursePageState extends State<CoursePage> {
                         left: 20, right: 20, bottom: 20),
                     child: CourseCard(
                       title: course.title, description: course.description,
+                      onPressed: () {
+                        GlobalsCo.titleCourse = course.title;
+                        GlobalsCo.dayCourse = course.description;
+                        GlobalsCo.timeCourse = course.time;
+                        GlobalsCo.semester = course.semester;
+                        GlobalsCo.listSV = course.listSV;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailPage(),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   )

@@ -13,6 +13,9 @@ class Course {
 }
 final List<Course> semester = [
   Course(
+      title: "1/2019-2020", description: ''
+  ),
+  Course(
       title: "1/2022-2023", description: ''
   ),
   Course(

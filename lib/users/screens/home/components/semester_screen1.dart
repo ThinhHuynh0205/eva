@@ -12,7 +12,7 @@ class SemesterPage1 extends StatefulWidget {
   State<SemesterPage1> createState() => _SemesterPage1State();
 }
 
-class Globals {
+class GlobalsSe {
   static String? titleSemester;
 }
 
@@ -44,7 +44,7 @@ class _SemesterPage1State extends State<SemesterPage1> {
                     child: SemesterCard(
                       title: course.title,
                       onPressed: () {
-                        Globals.titleSemester = course.title; // Lưu giá trị title vào biến global
+                        GlobalsSe.titleSemester = course.title; // Lưu giá trị title vào biến global
                         Navigator.push(
                           context,
                           MaterialPageRoute(
