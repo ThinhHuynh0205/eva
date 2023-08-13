@@ -117,7 +117,7 @@ class _CoursePageState extends State<CoursePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xFF14AEE7),
         title: const Text(
           'Lớp học',
           style: TextStyle(fontWeight: FontWeight.bold),

@@ -1,25 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva/manager/screens/home/components/manage_GV.dart';
+import 'package:eva/manager/screens/home/components/manage_HK.dart';
+import 'package:eva/manager/screens/home/components/manage_Lop.dart';
+import 'package:eva/manager/screens/home/components/manage_SV.dart';
 import 'package:eva/users/screens/home/components/calendar_screen.dart';
-import 'package:eva/users/screens/home/components/semester_screen1.dart';
-import 'package:eva/users/screens/home/components/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-
-
-class HomePage1 extends StatefulWidget {
-  const HomePage1({Key? key}) : super(key: key);
+class HomePageManager extends StatefulWidget {
+  const HomePageManager({Key? key}) : super(key: key);
 
   @override
-  _HomePage1State createState() => _HomePage1State();
+  State<HomePageManager> createState() => _HomePageManagerState();
 }
 
-class _HomePage1State extends State<HomePage1> {
+class _HomePageManagerState extends State<HomePageManager> {
   bool isPlaying = false;
-  UpdateStatus _updateStatus = UpdateStatus();
-  UpdateEnd _updateEnd = UpdateEnd();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,41 +37,41 @@ class _HomePage1State extends State<HomePage1> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SemesterPage1(),
+                            builder: (context) => const ManageGvPage(),
                           ),
                         );
                       },
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: Color(0xFF5DC4EA),
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                        )
+                          backgroundColor: Color(0xFF5DC4EA),
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                          )
                       ),
                       child: Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(top: 6, right: 8),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                              "My Courses",
-                              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                color: Colors.white,fontWeight: FontWeight.w900),
-                              ),
-                              SizedBox(height: 20),
-                              Icon(
-                                CupertinoIcons.home,
+                              children: [
+                                Text(
+                                  "Giảng viên",
+                                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                      color: Colors.white,fontWeight: FontWeight.w900),
+                                ),
+                                SizedBox(height: 20),
+                                Icon(
+                                  CupertinoIcons.person_2_alt,
                                   color: Colors.white,
-                                size: 50,
-                              ),
-                            ]
-                          ),
+                                  size: 50,
+                                ),
+                              ]
                           ),
                         ),
                       ),
                     ),
+                  ),
                   SizedBox(width: 10,),
                   Container(
                     height: 320,
@@ -86,7 +81,7 @@ class _HomePage1State extends State<HomePage1> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ProfilePage(),
+                            builder: (context) => const ManageSvPage(),
                           ),
                         );
                       },
@@ -103,19 +98,19 @@ class _HomePage1State extends State<HomePage1> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                              "Profile",
-                              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                  color: Colors.white,fontWeight: FontWeight.w900),
-                            ),
-                              SizedBox(height: 20),
-                              const Icon(
-                                CupertinoIcons.person,
-                                color: Colors.white,
-                                size: 50,
-                              ),
-                            ]
+                              children: [
+                                Text(
+                                  "Sinh viên",
+                                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                      color: Colors.white,fontWeight: FontWeight.w900),
+                                ),
+                                SizedBox(height: 20),
+                                const Icon(
+                                  CupertinoIcons.person_2_fill,
+                                  color: Colors.white,
+                                  size: 50,
+                                ),
+                              ]
                           ),
                         ),
                       ),
@@ -155,17 +150,17 @@ class _HomePage1State extends State<HomePage1> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                "Calendar",
-                                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    color: Colors.white,fontWeight: FontWeight.w900),
-                              ),
+                                  "Lịch",
+                                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                      color: Colors.white,fontWeight: FontWeight.w900),
+                                ),
                                 SizedBox(height: 20),
                                 const Icon(
-                                  CupertinoIcons.time,
+                                  CupertinoIcons.calendar,
                                   color: Colors.white,
                                   size: 50,
                                 ),
-                            ]
+                              ]
                           ),
                         ),
                       ),
@@ -177,18 +172,12 @@ class _HomePage1State extends State<HomePage1> {
                     width: 190,
                     child: OutlinedButton(
                       onPressed: (){
-                        setState(() {
-                          if (isPlaying) {
-                            // Khi đang play thì thực hiện logic update 'end' thành '1'
-                            // ở document có UID là uid của collection User
-                            _updateEnd.updateEndTo1();
-                          } else {
-                            // Khi đang pause thì thực hiện logic update 'status' thành '1'
-                            // ở document có UID là uid của collection User
-                            _updateStatus.updateStatusTo1();
-                          }
-                          isPlaying = !isPlaying; // Đảo trạng thái play/pause
-                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ManageHkPage(),
+                          ),
+                        );
                       },
                       style: OutlinedButton.styleFrom(
                           backgroundColor: Color(0xFF0891C4),
@@ -205,20 +194,18 @@ class _HomePage1State extends State<HomePage1> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                "Hardware ",
+                                  "Lớp học",
                                   textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    color: Colors.white,fontWeight: FontWeight.w900),
-                              ),
+                                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                      color: Colors.white,fontWeight: FontWeight.w900),
+                                ),
                                 SizedBox(height: 20),
                                 Icon(
-                                  isPlaying
-                                      ? CupertinoIcons.pause_solid
-                                      : CupertinoIcons.play_arrow,
+                                  CupertinoIcons.person_crop_rectangle,
                                   color: Colors.white,
                                   size: 50,
                                 ),
-                            ]
+                              ]
                           ),
                         ),
                       ),
@@ -231,65 +218,5 @@ class _HomePage1State extends State<HomePage1> {
         ),
       ),
     );
-  }
-}
-class UpdateEnd {
-  Future<void> updateEndTo1() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final uid = prefs.getString('uid');
-      // Lấy danh sách các documents thỏa mãn điều kiện
-      QuerySnapshot<Map<String, dynamic>> snapshot =
-      await FirebaseFirestore.instance
-          .collection('User')
-          .where('UID', isEqualTo: uid)
-          .get();
-
-      // Lấy ID của document đầu tiên nếu có
-      if (snapshot.docs.isNotEmpty) {
-        String documentId = snapshot.docs[0].id;
-
-        // Cập nhật dữ liệu 'status' thành '1' cho document có ID là documentId
-        await FirebaseFirestore.instance.collection('User').doc(documentId).update({
-          'end': 1,
-        });
-
-        print('Status updated successfully for document with ID: $documentId');
-      } else {
-        print('No matching documents found');
-      }
-    } catch (e) {
-      print('Error updating status: $e');
-    }
-  }
-}
-class UpdateStatus {
-  Future<void> updateStatusTo1() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final uid = prefs.getString('uid');
-      // Lấy danh sách các documents thỏa mãn điều kiện
-      QuerySnapshot<Map<String, dynamic>> snapshot =
-      await FirebaseFirestore.instance
-          .collection('User')
-          .where('UID', isEqualTo: uid)
-          .get();
-
-      // Lấy ID của document đầu tiên nếu có
-      if (snapshot.docs.isNotEmpty) {
-        String documentId = snapshot.docs[0].id;
-
-        // Cập nhật dữ liệu 'status' thành '1' cho document có ID là documentId
-        await FirebaseFirestore.instance.collection('User').doc(documentId).update({
-          'status': 1,
-        });
-
-        print('Status updated successfully for document with ID: $documentId');
-      } else {
-        print('No matching documents found');
-      }
-    } catch (e) {
-      print('Error updating status: $e');
-    }
   }
 }

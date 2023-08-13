@@ -1,5 +1,4 @@
 import 'package:eva/users/screens/home/components/course_sreen.dart';
-import 'package:eva/users/screens/home/components/semester_screen1.dart';
 import 'package:eva/users/screens/home/components/student_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -111,7 +110,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xFF14AEE7),
         title: SingleChildScrollView(
           scrollDirection: Axis.horizontal, // Để cho phép ngang kéo lướt
           child: Text(
@@ -161,13 +160,18 @@ class _DetailPageState extends State<DetailPage> {
                   hintText: '',
                 ),
                 readOnly: true,
-                controller: TextEditingController(text: evalSV.isNotEmpty ? (evalSV.fold(0, (sum, eval) => sum + eval.eval) / evalSV.length).toStringAsFixed(2) : '0.00'), // Đặt giá trị mặc định
+                controller: TextEditingController(
+                    text: evalSV.isNotEmpty
+                        ? double.parse((evalSV.fold(0, (sum, eval) => sum + eval.eval) / evalSV.length).toString()).toStringAsFixed(2)
+                        : '0.00',
+
+                ), // Đặt giá trị mặc định
               ),
               SizedBox(height: 16),
               Text(
                 "Danh sách lớp",
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Colors.deepPurpleAccent,fontWeight: FontWeight.w900),
+                    color: Colors.blueAccent,fontWeight: FontWeight.w900),
               ),
               SizedBox(height: 16),
               Expanded(
@@ -183,7 +187,7 @@ class _DetailPageState extends State<DetailPage> {
                       child: CircularProgressIndicator(), // Hiển thị biểu tượng tải
                     )
                     : Table(
-                      border: TableBorder.all(color: Colors.deepPurpleAccent),
+                      border: TableBorder.all(color: Colors.blue),
                       children: [
                         TableRow(
                           children: [

@@ -1,7 +1,7 @@
-import 'package:eva/users/screens/onboding/components/sign_in_form.dart';
+import 'package:eva/users/screens/home/components/calendar_screen.dart';
+import 'package:eva/users/screens/home/components/profile_screen.dart';
+import 'package:eva/users/screens/home/components/semester_screen1.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../../model/menu.dart';
 import '../../../utils/rive_utils.dart';
 import 'info_card.dart';
@@ -65,6 +65,30 @@ class _SideBarState extends State<SideBar> {
                           setState(() {
                             selectedSideMenu = menu;
                           });
+                          if (menu.title == "Profile") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfilePage(), // Điều hướng tới trang ProfilePage
+                              ),
+                            );
+                          }
+                          if (menu.title == "Calendar") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EventCalendarScreen(), // Điều hướng tới trang ProfilePage
+                              ),
+                            );
+                          }
+                          if (menu.title == "My Courses") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SemesterPage1(), // Điều hướng tới trang ProfilePage
+                              ),
+                            );
+                          }
                         },
                         riveOnInit: (artboard) {
                           menu.rive.status = RiveUtils.getRiveInput(artboard,

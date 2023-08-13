@@ -188,7 +188,7 @@ class _ProfileCardState extends State<ProfileCard> {
                 onPressed: () {
                   _saveChanges();
                 },
-                child: Text('Save'),
+                child: Text('Lưu'),
               ),
             ],
           ),

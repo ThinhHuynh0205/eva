@@ -1,29 +1,31 @@
 import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva/constants.dart';
+import 'package:eva/manager/screens/home/home_screnn_manager.dart';
+import 'package:eva/users/model/menu.dart';
+import 'package:eva/users/screens/entryPoint/components/btm_nav_item.dart';
+import 'package:eva/users/screens/entryPoint/components/menu_btn.dart';
+import 'package:eva/users/screens/entryPoint/components/side_bar.dart';
 import 'package:eva/users/screens/home/components/calendar_screen.dart';
 import 'package:eva/users/screens/home/components/profile_screen.dart';
 import 'package:eva/users/screens/home/components/semester_screen1.dart';
 import 'package:eva/users/screens/onboding/onboding_screen.dart';
+import 'package:eva/users/utils/rive_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../constants.dart';
-import '../../model/menu.dart';
-import '../../utils/rive_utils.dart';
-import '../home/home_screen1.dart';
-import 'components/btm_nav_item.dart';
-import 'components/menu_btn.dart';
-import 'components/side_bar.dart';
 
-class EntryPoint extends StatefulWidget {
-  const EntryPoint({super.key});
+class EntryPointManager extends StatefulWidget {
+  const EntryPointManager({Key? key}) : super(key: key);
 
   @override
-  State<EntryPoint> createState() => _EntryPointState();
+  State<EntryPointManager> createState() => _EntryPointManagerState();
 }
 
-class _EntryPointState extends State<EntryPoint>
+class _EntryPointManagerState extends State<EntryPointManager>
     with SingleTickerProviderStateMixin {
   bool isSideBarOpen = false;
 
@@ -49,7 +51,7 @@ class _EntryPointState extends State<EntryPoint>
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200))
       ..addListener(
-        () {
+            () {
           setState(() {});
         },
       );
@@ -128,7 +130,7 @@ class _EntryPointState extends State<EntryPoint>
             left: isSideBarOpen ? 0 : -288,
             top: 0,
             child:   SideBar(
-                nameFromFirestore: '$nameFromFirestore',
+              nameFromFirestore: '$nameFromFirestore',
               signOutCallback: navigateToLogin,
             ),
           ),
@@ -157,7 +159,7 @@ class _EntryPointState extends State<EntryPoint>
                           return false;
                         }
                       },
-                      child: HomePage1()),
+                      child: HomePageManager()),
                 ),
               ),
             ),
@@ -178,7 +180,7 @@ class _EntryPointState extends State<EntryPoint>
                 }
 
                 setState(
-                  () {
+                      () {
                     isSideBarOpen = !isSideBarOpen;
                   },
                 );
@@ -190,7 +192,7 @@ class _EntryPointState extends State<EntryPoint>
                 artboard.addController(controller!);
 
                 isMenuOpenInput =
-                    controller.findInput<bool>("isOpen") as SMIBool;
+                controller.findInput<bool>("isOpen") as SMIBool;
                 isMenuOpenInput.value = true;
               },
             ),
@@ -202,7 +204,7 @@ class _EntryPointState extends State<EntryPoint>
         child: SafeArea(
           child: Container(
             padding:
-                const EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 12),
+            const EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 12),
             margin: const EdgeInsets.symmetric(horizontal: 50),
             decoration: BoxDecoration(
               color: backgroundColor2.withOpacity(0.8),
@@ -220,7 +222,7 @@ class _EntryPointState extends State<EntryPoint>
               children: [
                 ...List.generate(
                   bottomNavItems.length,
-                  (index) {
+                      (index) {
                     Menu navBar = bottomNavItems[index];
                     return BtmNavItem(
                       navBar: navBar,

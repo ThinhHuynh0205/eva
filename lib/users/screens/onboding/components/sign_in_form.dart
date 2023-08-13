@@ -1,3 +1,4 @@
+import 'package:eva/manager/screens/entryPoint/entry_point_Manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -76,16 +77,26 @@ class _SignInFormState extends State<SignInForm> {
               // Nếu thành công, bạn có thể tiếp tục chuyển hướng đến trang chính của ứng dụng
               // Lưu thông tin đăng nhập vào SharedPreferences
               final prefs = await SharedPreferences.getInstance();
+              final uid = FirebaseAuth.instance.currentUser!.uid;
               prefs.setString('uid', FirebaseAuth.instance.currentUser!.uid);
               setState(() {
                 isShowLoading = false;
               });
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EntryPoint(),
-                ),
-              );
+              if (uid == 'RE12kjX0fvZm64lesUcgERWRqM13') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const EntryPointManager(),
+                  ),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const EntryPoint(),
+                  ),
+                );
+              }
             }
           } catch (e) {
             // Xử lý lỗi khi đăng nhập

@@ -9,25 +9,25 @@ class Menu {
 
 List<Menu> sidebarMenus = [
   Menu(
-    title: "Home",
+    title: "My Courses",
     rive: RiveModel(
         src: "assets/RiveAssets/icons.riv",
         artboard: "HOME",
         stateMachineName: "HOME_interactivity"),
   ),
   Menu(
-    title: "Search",
+    title: "Profile",
     rive: RiveModel(
         src: "assets/RiveAssets/icons.riv",
-        artboard: "SEARCH",
-        stateMachineName: "SEARCH_Interactivity"),
+        artboard: "USER",
+        stateMachineName: "USER_Interactivity"),
   ),
   Menu(
-    title: "Favorites",
+    title: "Calendar",
     rive: RiveModel(
         src: "assets/RiveAssets/icons.riv",
-        artboard: "LIKE/STAR",
-        stateMachineName: "STAR_Interactivity"),
+        artboard: "TIMER",
+        stateMachineName: "TIMER_Interactivity"),
   ),
   Menu(
     title: "Help",
@@ -55,13 +55,6 @@ List<Menu> sidebarMenus2 = [
 ];
 
 List<Menu> bottomNavItems = [
-  //Menu(
-    //title: "Chat",
-    //rive: RiveModel(
-        //src: "assets/RiveAssets/icons.riv",
-        //artboard: "CHAT",
-        //stateMachineName: "CHAT_Interactivity"),
-  //),
   Menu(
     title: "Home",
     rive: RiveModel(

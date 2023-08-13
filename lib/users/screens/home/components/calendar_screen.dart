@@ -68,7 +68,7 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text(
-          'Add New Event',
+          'Sự kiện mới',
           textAlign: TextAlign.center,
         ),
         content: Column(
@@ -79,29 +79,29 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
               controller: titleController,
               textCapitalization: TextCapitalization.words,
               decoration: const InputDecoration(
-                labelText: 'Title',
+                labelText: 'Tựa đề',
               ),
             ),
             TextField(
               controller: descpController,
               textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(labelText: 'Description'),
+              decoration: const InputDecoration(labelText: 'Nội dung'),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text('Hủy'),
           ),
           TextButton(
-            child: const Text('Add Event'),
+            child: const Text('Thêm sự kiện'),
             onPressed: () async {
               if (titleController.text.isEmpty &&
                   descpController.text.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Required title and description'),
+                    content: Text('Tựa đề và nội dung bắt buộc'),
                     duration: Duration(seconds: 2),
                   ),
                 );
@@ -147,95 +147,16 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
     );
   }
 
-  // _showAddEventDialog() async {
-  //   await showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       title: const Text(
-  //         'Add New Event',
-  //         textAlign: TextAlign.center,
-  //       ),
-  //       content: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.stretch,
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: [
-  //           TextField(
-  //             controller: titleController,
-  //             textCapitalization: TextCapitalization.words,
-  //             decoration: const InputDecoration(
-  //               labelText: 'Title',
-  //             ),
-  //           ),
-  //           TextField(
-  //             controller: descpController,
-  //             textCapitalization: TextCapitalization.words,
-  //             decoration: const InputDecoration(labelText: 'Description'),
-  //           ),
-  //         ],
-  //       ),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () => Navigator.pop(context),
-  //           child: const Text('Cancel'),
-  //         ),
-  //         TextButton(
-  //           child: const Text('Add Event'),
-  //           onPressed: () {
-  //             if (titleController.text.isEmpty &&
-  //                 descpController.text.isEmpty) {
-  //               ScaffoldMessenger.of(context).showSnackBar(
-  //                 const SnackBar(
-  //                   content: Text('Required title and description'),
-  //                   duration: Duration(seconds: 2),
-  //                 ),
-  //               );
-  //               //Navigator.pop(context);
-  //               return;
-  //             } else {
-  //               print(titleController.text);
-  //               print(descpController.text);
-  //
-  //               setState(() {
-  //                 if (mySelectedEvents[
-  //                 DateFormat('yyyy-MM-dd').format(_selectedDate!)] !=
-  //                     null) {
-  //                   mySelectedEvents[
-  //                   DateFormat('yyyy-MM-dd').format(_selectedDate!)]
-  //                       ?.add({
-  //                     "eventTitle": titleController.text,
-  //                     "eventDescp": descpController.text,
-  //                   });
-  //                 } else {
-  //                   mySelectedEvents[
-  //                   DateFormat('yyyy-MM-dd').format(_selectedDate!)] = [
-  //                     {
-  //                       "eventTitle": titleController.text,
-  //                       "eventDescp": descpController.text,
-  //                     }
-  //                   ];
-  //                 }
-  //               });
-  //
-  //               print(
-  //                   "New Event for backend developer ${json.encode(mySelectedEvents)}");
-  //               titleController.clear();
-  //               descpController.clear();
-  //               Navigator.pop(context);
-  //               return;
-  //             }
-  //           },
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Event Calendar Example'),
+        backgroundColor: Color(0xFF14AEE7),
+        title: const Text(
+            'Calendar',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -289,9 +210,9 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
                 ),
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text('Event Title: ${event['eventTitle']}'),
+                  child: Text('Tựa đề: ${event['eventTitle']}'),
                 ),
-                subtitle: Text('Description: ${event['eventDescp']}'),
+                subtitle: Text('Nội dung: ${event['eventDescp']}'),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () => _deleteEvent(index),
@@ -304,7 +225,7 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showAddEventDialog(),
-        label: const Text('Add Event'),
+        label: const Text('Thêm sự kiện'),
       ),
     );
   }
