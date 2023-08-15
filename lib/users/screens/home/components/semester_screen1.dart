@@ -20,7 +20,7 @@ class _SemesterPage1State extends State<SemesterPage1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xFF14AEE7),
         title: const Text(
           'Học kỳ',
           style: TextStyle(fontWeight: FontWeight.bold),

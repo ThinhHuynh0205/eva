@@ -7,7 +7,7 @@ class CourseCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.onPressed,
-    this.colorl = const Color(0xFF7553F6),
+    this.colorl = const Color(0xFF5DC4EA),
   }) : super(key: key);
 
   final String title,description;

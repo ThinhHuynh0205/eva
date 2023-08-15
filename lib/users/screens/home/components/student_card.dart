@@ -7,7 +7,7 @@ class StudentCard extends StatelessWidget {
     required this.mssv,
     required this.namesv,
     required this.onPressed,
-    this.colorl = const Color(0xFF7553F6),
+    this.colorl = const Color(0xFF5DC4EA),
   }) : super(key: key);
 
   final String mssv,namesv;

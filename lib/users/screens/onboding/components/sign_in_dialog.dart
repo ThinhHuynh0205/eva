@@ -51,7 +51,7 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         child: Text(
-                          "Vui lòng đăng nhập với tài khoản được cung cấp bởi quản lý.",
+                          "Vui lòng đăng nhập với tài khoản được cung cấp từ giáo vụ",
                           textAlign: TextAlign.center,
                         ),
                       ),

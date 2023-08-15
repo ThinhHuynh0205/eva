@@ -131,7 +131,7 @@ class _HomePageManagerState extends State<HomePageManager> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const EventCalendarScreen(),
+                            builder: (context) =>  EventCalendarScreen(),
                           ),
                         );
                       },

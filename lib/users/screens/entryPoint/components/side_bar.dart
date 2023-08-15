@@ -49,7 +49,7 @@ class _SideBarState extends State<SideBar> {
               Padding(
                 padding: const EdgeInsets.only(left: 24, top: 32, bottom: 16),
                 child: Text(
-                  "Browse".toUpperCase(),
+                  "".toUpperCase(),
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium!
@@ -65,7 +65,7 @@ class _SideBarState extends State<SideBar> {
                           setState(() {
                             selectedSideMenu = menu;
                           });
-                          if (menu.title == "Profile") {
+                          if (menu.title == "Hồ sơ") {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -73,7 +73,7 @@ class _SideBarState extends State<SideBar> {
                               ),
                             );
                           }
-                          if (menu.title == "Calendar") {
+                          if (menu.title == "Lịch") {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -81,7 +81,7 @@ class _SideBarState extends State<SideBar> {
                               ),
                             );
                           }
-                          if (menu.title == "My Courses") {
+                          if (menu.title == "Lớp học") {
                             Navigator.push(
                               context,
                               MaterialPageRoute(

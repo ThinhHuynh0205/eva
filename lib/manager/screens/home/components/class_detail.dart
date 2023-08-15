@@ -44,7 +44,6 @@ class _ClassDetailState extends State<ClassDetail> {
 
   final TextEditingController _dayController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
-  final TextEditingController _uidController = TextEditingController();
 
   @override
   void initState() {
@@ -126,11 +125,6 @@ class _ClassDetailState extends State<ClassDetail> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                decoration: InputDecoration(labelText: 'UID giảng viên'),
-                controller: _uidController,
-              ),
-              SizedBox(height: 20),
-              TextField(
                 decoration: InputDecoration(labelText: 'Ngày'),
                 controller: _dayController,
               ),
@@ -171,7 +165,6 @@ class _ClassDetailState extends State<ClassDetail> {
     try {
       String newDay = _dayController.text;
       String newTime = _timeController.text;
-      String newUID = _uidController.text;
 
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
       await FirebaseFirestore.instance
@@ -185,7 +178,6 @@ class _ClassDetailState extends State<ClassDetail> {
         await docSnapshot.reference.update({
           'Day': newDay,
           'Time': newTime,
-          'UID' : newUID,
         });
       }
 
@@ -235,7 +227,7 @@ class _ClassDetailState extends State<ClassDetail> {
                   hintText: '',
                 ),
                 readOnly: true,
-                controller: TextEditingController(text: '$UID'), // Đặt giá trị mặc định
+                controller: TextEditingController(text: '$GV'), // Đặt giá trị mặc định
               ),
               SizedBox(height: 20),
               TextField(

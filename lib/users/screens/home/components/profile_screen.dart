@@ -74,9 +74,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xFF14AEE7),
         title: const Text(
-          'Profile',
+          'Hồ sơ',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),

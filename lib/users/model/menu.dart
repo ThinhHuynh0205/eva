@@ -9,40 +9,40 @@ class Menu {
 
 List<Menu> sidebarMenus = [
   Menu(
-    title: "My Courses",
+    title: "Lớp học",
     rive: RiveModel(
         src: "assets/RiveAssets/icons.riv",
         artboard: "HOME",
         stateMachineName: "HOME_interactivity"),
   ),
   Menu(
-    title: "Profile",
+    title: "Hồ sơ",
     rive: RiveModel(
         src: "assets/RiveAssets/icons.riv",
         artboard: "USER",
         stateMachineName: "USER_Interactivity"),
   ),
   Menu(
-    title: "Calendar",
+    title: "Lịch",
     rive: RiveModel(
         src: "assets/RiveAssets/icons.riv",
         artboard: "TIMER",
         stateMachineName: "TIMER_Interactivity"),
   ),
-  Menu(
-    title: "Help",
-    rive: RiveModel(
-        src: "assets/RiveAssets/icons.riv",
-        artboard: "CHAT",
-        stateMachineName: "CHAT_Interactivity"),
-  ),
-  Menu(
-    title: "Notifications",
-    rive: RiveModel(
-        src: "assets/RiveAssets/icons.riv",
-        artboard: "BELL",
-        stateMachineName: "BELL_Interactivity"),
-  ),
+  // Menu(
+  //   title: "Help",
+  //   rive: RiveModel(
+  //       src: "assets/RiveAssets/icons.riv",
+  //       artboard: "CHAT",
+  //       stateMachineName: "CHAT_Interactivity"),
+  // ),
+  // Menu(
+  //   title: "Notifications",
+  //   rive: RiveModel(
+  //       src: "assets/RiveAssets/icons.riv",
+  //       artboard: "BELL",
+  //       stateMachineName: "BELL_Interactivity"),
+  // ),
 ];
 List<Menu> sidebarMenus2 = [
   Menu(

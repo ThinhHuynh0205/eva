@@ -68,7 +68,7 @@ class _SvPageState extends State<SvPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xFF14AEE7),
         title: const Text(
             'Thông tin sinh viên',
           style: TextStyle(fontWeight: FontWeight.bold),

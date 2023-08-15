@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva/manager/screens/home/components/gv_card.dart';
+import 'package:eva/manager/screens/home/components/manage_Lop.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,7 @@ class _ManageGvPageState extends State<ManageGvPage> {
       print('Lỗi khi lấy dữ liệu từ Firestore: $error');
     }
   }
+
 
   void _showRegistrationDialog(BuildContext context) {
     String name = '';
@@ -272,16 +274,22 @@ class _ManageGvPageState extends State<ManageGvPage> {
             TextButton(
               onPressed: () async {
                 try {
-                  // Cập nhật thông tin giảng viên trên Cloud Firestore
+
+                  QuerySnapshot<Map<String, dynamic>> querySnapshot =
                   await FirebaseFirestore.instance
                       .collection('User')
-                      .doc(giangvienItem.UID)
-                      .update({
-                    'Name': updatedName,
-                    'Chức vụ': updatedChucvu,
-                    'email': updatedEmail,
-                    'card_id': updatedCardId,
-                  });
+                      .where('UID', isEqualTo: giangvienItem.UID)
+                      .get();
+
+                  for (QueryDocumentSnapshot<Map<String, dynamic>> docSnapshot
+                  in querySnapshot.docs) {
+                    await docSnapshot.reference.update({
+                      'Name': updatedName,
+                      'Chức vụ': updatedChucvu,
+                      'email': updatedEmail,
+                      'card_id': updatedCardId,
+                    });
+                  }
 
                   // Đóng hộp thoại và hiển thị thông báo cập nhật thành công
                   Navigator.pop(context);
@@ -336,8 +344,6 @@ class _ManageGvPageState extends State<ManageGvPage> {
             TextButton(
               onPressed: () async {
                 try {
-                  // Xóa tài khoản từ Authentication
-                  await FirebaseAuth.instance.currentUser!.delete();
                   // Xóa dữ liệu từ Firestore
                   await FirebaseFirestore.instance
                       .collection('User')

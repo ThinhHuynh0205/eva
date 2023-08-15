@@ -61,13 +61,13 @@ class _HomePage1State extends State<HomePage1> {
                               mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                              "My Courses",
+                              "Lớp học",
                               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                                 color: Colors.white,fontWeight: FontWeight.w900),
                               ),
                               SizedBox(height: 20),
                               Icon(
-                                CupertinoIcons.home,
+                                CupertinoIcons.person_crop_rectangle,
                                   color: Colors.white,
                                 size: 50,
                               ),
@@ -105,7 +105,7 @@ class _HomePage1State extends State<HomePage1> {
                               mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                              "Profile",
+                              "Hồ sơ",
                               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                                   color: Colors.white,fontWeight: FontWeight.w900),
                             ),
@@ -136,7 +136,7 @@ class _HomePage1State extends State<HomePage1> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const EventCalendarScreen(),
+                            builder: (context) =>  EventCalendarScreen(),
                           ),
                         );
                       },
@@ -155,7 +155,7 @@ class _HomePage1State extends State<HomePage1> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                "Calendar",
+                                "Lịch",
                                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                                     color: Colors.white,fontWeight: FontWeight.w900),
                               ),
@@ -205,7 +205,7 @@ class _HomePage1State extends State<HomePage1> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                "Hardware ",
+                                "Thiết bị đánh giá lớp học",
                                   textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                                     color: Colors.white,fontWeight: FontWeight.w900),

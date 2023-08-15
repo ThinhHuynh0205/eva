@@ -6,7 +6,7 @@ class SemesterCard extends StatelessWidget {
     Key? key,
     required this.title,
     required this.onPressed,
-    this.color = const Color(0xFF7553F6),
+    this.color = const Color(0xFF5DC4EA),
   }) : super(key: key);
 
   final String title;

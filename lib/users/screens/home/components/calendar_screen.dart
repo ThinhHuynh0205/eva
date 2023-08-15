@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class EventCalendarScreen extends StatefulWidget {
   const EventCalendarScreen({Key? key}) : super(key: key);
@@ -20,131 +18,49 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
 
   Map<String, List> mySelectedEvents = {};
 
-  final titleController = TextEditingController();
-  final descpController = TextEditingController();
+  CollectionReference _eventsCollection =
+  FirebaseFirestore.instance.collection('Event');
+
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _descpController = TextEditingController();
 
   @override
-  void _deleteEvent(int index) async {
-    final dateKey = DateFormat('yyyy-MM-dd').format(_selectedDate!);
-    setState(() {
-      mySelectedEvents[dateKey]?.removeAt(index);
-    });
-
-    // Lưu lại dữ liệu vào bộ nhớ
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('mySelectedEvents', json.encode(mySelectedEvents));
-  }
-
   void initState() {
-    // TODO: implement initState
     super.initState();
     _selectedDate = _focusedDay;
-
-    loadPreviousEvents();
   }
 
-  void loadPreviousEvents() async {
-    final prefs = await SharedPreferences.getInstance();
-    final eventsString = prefs.getString('mySelectedEvents');
+  Future<void> _addEventToFirestore() async {
+    if (_selectedDate != null) {
+      String dateKey =
+          "${_selectedDate!.year}-${_selectedDate!.month}-${_selectedDate!.day}";
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      String title = _titleController.text;
+      String descp = _descpController.text;
 
-    if (eventsString != null) {
-      mySelectedEvents = Map<String, List>.from(json.decode(eventsString));
-    } else {
-      mySelectedEvents = {};
+      await _eventsCollection
+          .doc(uid)
+          .collection('Events')
+          .doc(dateKey)
+          .set({
+        'eventDate': dateKey,
+        'eventTitle': title,
+        'eventDescp': descp,
+      });
+
+      _titleController.clear();
+      _descpController.clear();
     }
   }
 
+  Future<void> _deleteEvent(String eventKey) async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
 
-  List _listOfDayEvents(DateTime dateTime) {
-    if (mySelectedEvents[DateFormat('yyyy-MM-dd').format(dateTime)] != null) {
-      return mySelectedEvents[DateFormat('yyyy-MM-dd').format(dateTime)]!;
-    } else {
-      return [];
-    }
-  }
-
-  _showAddEventDialog() async {
-    await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          'Sự kiện mới',
-          textAlign: TextAlign.center,
-        ),
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: titleController,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                labelText: 'Tựa đề',
-              ),
-            ),
-            TextField(
-              controller: descpController,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(labelText: 'Nội dung'),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Hủy'),
-          ),
-          TextButton(
-            child: const Text('Thêm sự kiện'),
-            onPressed: () async {
-              if (titleController.text.isEmpty &&
-                  descpController.text.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Tựa đề và nội dung bắt buộc'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-                //Navigator.pop(context);
-                return;
-              } else {
-                print(titleController.text);
-                print(descpController.text);
-
-                final dateKey = DateFormat('yyyy-MM-dd').format(_selectedDate!);
-
-                setState(() {
-                  if (mySelectedEvents[dateKey] != null) {
-                    mySelectedEvents[dateKey]?.add({
-                      "eventTitle": titleController.text,
-                      "eventDescp": descpController.text,
-                    });
-                  } else {
-                    mySelectedEvents[dateKey] = [
-                      {
-                        "eventTitle": titleController.text,
-                        "eventDescp": descpController.text,
-                      }
-                    ];
-                  }
-                });
-
-                // Lưu lại dữ liệu vào bộ nhớ
-                final prefs = await SharedPreferences.getInstance();
-                prefs.setString('mySelectedEvents', json.encode(mySelectedEvents));
-
-                print(
-                    "New Event for backend developer ${json.encode(mySelectedEvents)}");
-                titleController.clear();
-                descpController.clear();
-                Navigator.pop(context);
-                return;
-              }
-            },
-          )
-        ],
-      ),
-    );
+    await _eventsCollection
+        .doc(uid)
+        .collection('Events')
+        .doc(eventKey)
+        .delete();
   }
 
   @override
@@ -154,7 +70,7 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
         centerTitle: true,
         backgroundColor: Color(0xFF14AEE7),
         title: const Text(
-            'Calendar',
+          'Lịch',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -169,7 +85,7 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
                 titleCentered: true,
               ),
               availableGestures: AvailableGestures.all,
-              firstDay:DateTime.utc(2010, 1, 1),
+              firstDay: DateTime.utc(2010, 1, 1),
               lastDay: DateTime.utc(2040, 1, 1),
               focusedDay: _focusedDay,
               calendarFormat: _calendarFormat,
@@ -197,29 +113,58 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
                 // No need to call `setState()` here
                 _focusedDay = focusedDay;
               },
-              eventLoader: _listOfDayEvents,
+              eventLoader: (date) => _listOfDayEvents(date, FirebaseAuth.instance.currentUser!.uid),
+
             ),
-            ..._listOfDayEvents(_selectedDate!).asMap().entries.map((entry) {
-              final index = entry.key;
-              final event = entry.value;
+            StreamBuilder<QuerySnapshot>(
+              stream: _eventsCollection
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .collection('Events')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                }
 
-              return ListTile(
-                leading: const Icon(
-                  Icons.done,
-                  color: Colors.teal,
-                ),
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text('Tựa đề: ${event['eventTitle']}'),
-                ),
-                subtitle: Text('Nội dung: ${event['eventDescp']}'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => _deleteEvent(index),
-                ),
-              );
-            }).toList(),
+                List<Widget> eventWidgets = [];
+                snapshot.data!.docs.forEach((document) {
+                  Map<String, dynamic> event =
+                  document.data() as Map<String, dynamic>;
+                  eventWidgets.add(
+                    ListTile(
+                      leading: const Icon(
+                        Icons.done,
+                        color: Colors.teal,
+                      ),
+                      title: Text('Ngày: ${event['eventDate']}'),
+                      subtitle: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            children: [
+                              Text('Tiêu đề: ${event['eventTitle']}'),
+                              Text('Nội dung: ${event['eventDescp']}'),
+                            ],
+                          ),
+                        ],
+                      ),
+                      trailing: IconButton(
+                        onPressed: () {
+                          _deleteEvent(document.id);
+                        },
+                        icon: Icon(Icons.delete),
+                      ),
+                    ),
+                  );
+                });
 
+                return ListView(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: eventWidgets,
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -229,4 +174,83 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
       ),
     );
   }
+
+  List<dynamic> _listOfDayEvents(DateTime dateTime, String uid) {
+    final dateKey = DateFormat('yyyy-MM-dd').format(dateTime);
+    if (mySelectedEvents[dateKey] != null) {
+      return mySelectedEvents[dateKey]!;
+    } else {
+      return [];
+    }
+  }
+
+
+
+
+
+  _showAddEventDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        title: const Text(
+          'Sự kiện mới',
+          textAlign: TextAlign.center,
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _titleController,
+              textCapitalization: TextCapitalization.words,
+              decoration: const InputDecoration(
+                labelText: 'Tựa đề',
+              ),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: _descpController,
+              textCapitalization: TextCapitalization.words,
+              decoration: const InputDecoration(labelText: 'Nội dung'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Hủy'),
+          ),
+          TextButton(
+            child: const Text('Thêm sự kiện'),
+            onPressed: () async {
+              if (_titleController.text.isEmpty &&
+                  _descpController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Tựa đề và nội dung bắt buộc'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+                return;
+              } else {
+                await _addEventToFirestore();
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(
+    MaterialApp(
+      home: EventCalendarScreen(),
+    ),
+  );
 }
