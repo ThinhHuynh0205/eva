@@ -1,0 +1,19 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "LopHoc",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "UID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "Semester",
+          "arrayConfig": "CONTAINS"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
