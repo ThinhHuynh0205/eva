@@ -74,7 +74,6 @@ class _SignInFormState extends State<SignInForm> {
 
             // Kiểm tra xem việc đăng nhập có thành công hay không
             if (FirebaseAuth.instance.currentUser != null) {
-              // Nếu thành công, bạn có thể tiếp tục chuyển hướng đến trang chính của ứng dụng
               // Lưu thông tin đăng nhập vào SharedPreferences
               final prefs = await SharedPreferences.getInstance();
               final uid = FirebaseAuth.instance.currentUser!.uid;

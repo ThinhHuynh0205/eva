@@ -179,12 +179,8 @@ class _HomePage1State extends State<HomePage1> {
                       onPressed: (){
                         setState(() {
                           if (isPlaying) {
-                            // Khi đang play thì thực hiện logic update 'end' thành '1'
-                            // ở document có UID là uid của collection User
                             _updateEnd.updateEndTo1();
                           } else {
-                            // Khi đang pause thì thực hiện logic update 'status' thành '1'
-                            // ở document có UID là uid của collection User
                             _updateStatus.updateStatusTo1();
                           }
                           isPlaying = !isPlaying; // Đảo trạng thái play/pause
@@ -248,8 +244,6 @@ class UpdateEnd {
       // Lấy ID của document đầu tiên nếu có
       if (snapshot.docs.isNotEmpty) {
         String documentId = snapshot.docs[0].id;
-
-        // Cập nhật dữ liệu 'status' thành '1' cho document có ID là documentId
         await FirebaseFirestore.instance.collection('User').doc(documentId).update({
           'end': 1,
         });
@@ -268,18 +262,14 @@ class UpdateStatus {
     try {
       final prefs = await SharedPreferences.getInstance();
       final uid = prefs.getString('uid');
-      // Lấy danh sách các documents thỏa mãn điều kiện
       QuerySnapshot<Map<String, dynamic>> snapshot =
       await FirebaseFirestore.instance
           .collection('User')
           .where('UID', isEqualTo: uid)
           .get();
-
-      // Lấy ID của document đầu tiên nếu có
       if (snapshot.docs.isNotEmpty) {
         String documentId = snapshot.docs[0].id;
 
-        // Cập nhật dữ liệu 'status' thành '1' cho document có ID là documentId
         await FirebaseFirestore.instance.collection('User').doc(documentId).update({
           'status': 1,
         });
