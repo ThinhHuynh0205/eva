@@ -84,7 +84,6 @@ class _DetailPageState extends State<DetailPage> {
           .collection('Atend_Eval')
           .where('Class', isEqualTo: course)
           .get();
-      // Chuyển dữ liệu từ snapshot sang danh sách lop
       processData(snapshot);
     } catch (e) {
       // Xử lý lỗi nếu có

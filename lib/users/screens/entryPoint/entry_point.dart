@@ -1,8 +1,5 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eva/users/screens/home/components/calendar_screen.dart';
-import 'package:eva/users/screens/home/components/profile_screen.dart';
-import 'package:eva/users/screens/home/components/semester_screen1.dart';
 import 'package:eva/users/screens/onboding/onboding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,9 +7,7 @@ import 'package:rive/rive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants.dart';
 import '../../model/menu.dart';
-import '../../utils/rive_utils.dart';
 import '../home/home_screen1.dart';
-import 'components/btm_nav_item.dart';
 import 'components/menu_btn.dart';
 import 'components/side_bar.dart';
 
@@ -149,10 +144,8 @@ class _EntryPointState extends State<EntryPoint>
                   child: WillPopScope(
                       onWillPop: () async {
                         if (Navigator.of(context).userGestureInProgress) {
-                          // Đang có thao tác của người dùng, cho phép quay lại màn hình trước
                           return true;
                         } else {
-                          // Ngăn chặn quay lại và thoát ứng dụng
                           exitApp();
                           return false;
                         }
@@ -197,74 +190,6 @@ class _EntryPointState extends State<EntryPoint>
           ),
         ],
       ),
-      // bottomNavigationBar: Transform.translate(
-      //   offset: Offset(0, 100 * animation.value),
-      //   child: SafeArea(
-      //     child: Container(
-      //       padding:
-      //           const EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 12),
-      //       margin: const EdgeInsets.symmetric(horizontal: 50),
-      //       decoration: BoxDecoration(
-      //         color: backgroundColor2.withOpacity(0.8),
-      //         borderRadius: const BorderRadius.all(Radius.circular(24)),
-      //         boxShadow: [
-      //           BoxShadow(
-      //             color: backgroundColor2.withOpacity(0.3),
-      //             offset: const Offset(0, 20),
-      //             blurRadius: 20,
-      //           ),
-      //         ],
-      //       ),
-      //       child: Row(
-      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //         children: [
-      //           ...List.generate(
-      //             bottomNavItems.length,
-      //             (index) {
-      //               Menu navBar = bottomNavItems[index];
-      //               return BtmNavItem(
-      //                 navBar: navBar,
-      //                 press: () {
-      //                   RiveUtils.chnageSMIBoolState(navBar.rive.status!);
-      //                   updateSelectedBtmNav(navBar);
-      //                   if (navBar.title == "Profile") {
-      //                     Navigator.push(
-      //                       context,
-      //                       MaterialPageRoute(
-      //                         builder: (context) => ProfilePage(),
-      //                       ),
-      //                     );
-      //                   }
-      //                   if (navBar.title == "Calendar") {
-      //                     Navigator.push(
-      //                       context,
-      //                       MaterialPageRoute(
-      //                         builder: (context) => EventCalendarScreen(), // Điều hướng tới trang ProfilePage
-      //                       ),
-      //                     );
-      //                   }
-      //                   if (navBar.title == "Home") {
-      //                     Navigator.push(
-      //                       context,
-      //                       MaterialPageRoute(
-      //                         builder: (context) => SemesterPage1(), // Điều hướng tới trang ProfilePage
-      //                       ),
-      //                     );
-      //                   }
-      //                 },
-      //                 riveOnInit: (artboard) {
-      //                   navBar.rive.status = RiveUtils.getRiveInput(artboard,
-      //                       stateMachineName: navBar.rive.stateMachineName);
-      //                 },
-      //                 selectedNav: selectedBottonNav,
-      //               );
-      //             },
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
     );
   }
 }

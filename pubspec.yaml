@@ -44,6 +44,7 @@ dependencies:
   profile: ^0.0.1
   line_awesome_flutter: ^2.0.0
   shared_preferences: ^2.2.0
+  firebase_performance: ^0.9.2+5
 
 dev_dependencies:
   flutter_test:
